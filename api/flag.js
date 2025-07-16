@@ -2,7 +2,7 @@ const axios = require('axios');
 
 // Serverless function that  handles one incoming request and sends one response back.
 module.exports = async (req, res) => {
-  // Ensures the browser gets permission regardless of what happens next.
+  // CORS headers to allow cross-origin requests
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -16,9 +16,12 @@ module.exports = async (req, res) => {
 
     const response = await axios.post(
       awsUrl,
-      "Ramp", // The request body
+      "Ramp",
       {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',
+        // Bypassing the AWS server's "bot" detection.
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+         },
       }
     );
 
